@@ -4,6 +4,8 @@
  */
 package tarea4b;
 
+import java.util.InputMismatchException;
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 import org.apache.commons.lang3.RandomStringUtils;
 
@@ -14,45 +16,87 @@ import org.apache.commons.lang3.RandomStringUtils;
 public class Tarea4Bpassword {
 
     public static void main(String[] args) {
+        Scanner teclado = new Scanner(System.in);
 
-        String opcion = JOptionPane.showInputDialog("""
-                              ESCOGE UNA OPCIÓN
-                        -------------------------------
-                        1 - Pin de 4 dígitos
-                        2 - Secuencia alafanumérica
-                        3 - Secuencia personalizada
-                        -------------------------------
-                            Salir
-                                                    
-                                                    """);
-        
-        if (!opcion.equalsIgnoreCase("salir")){
+        String opcion = "";
+
+        while (!opcion.equalsIgnoreCase("salir")) {
             
+            System.out.println("""
+                                 ESCOGE UNA OPCIÓN
+                             -------------------------------
+                              1 - Pin de 4 dígitos
+                              2 - Secuencia alafanumérica
+                              3 - Secuencia personalizada
+                             -------------------------------
+                                   Salir
+                           """);
+
+        opcion = teclado.nextLine();
+        
+            switch (opcion) {
+                case "1":
+                    String pin = opcion1();
+                    System.out.println("Tu pin es: " + pin);
+                    break;
+                case "2":
+                    String password = opcion2();
+                    System.out.println("Tu contraseña alfanumérica es: " + password);
+                    break;
+                case "3":
+                    String password2 = opcion3();
+                    System.out.println("Tu contraseña personalizada es: " + password2);
+                    break;
+                case "salir":
+                    System.out.println("Hasta luegui <3");
+                    break;
+                default:
+                    System.out.println("Opción no válida");
+            }
         }
 
-        //opcion 1 - pin de 4 digitos
+    }
+
+    private static String opcion1() {
+        String pin = "";
         for (int i = 0; i < 10; i++) {
-            String pin = RandomStringUtils.randomNumeric(4);
-            System.out.println(pin);
+            pin = RandomStringUtils.randomNumeric(4);
         }
+        return pin;
+    }
 
-        System.out.println("------------------------");
-
-        //opcion 2 - pin de 8 letras y numeros
+    private static String opcion2() {
+        String password = "";
         for (int i = 0; i < 10; i++) {
-            String password = RandomStringUtils.randomAlphabetic(8);
-            System.out.println(password);
+            password = RandomStringUtils.randomAlphabetic(8);
         }
+        return password;
+    }
 
-        System.out.println("---------------------------");
-
-        //opcion 3 - 
-        char[] conjuntoCaracteres = {'a', 'z', 'b', '$', '&', '*', '1'};
-        int numero = 6;
+    private static String opcion3() {
+        Scanner teclado = new Scanner(System.in);
+        char[] conjuntoCaracteres = {'a', 'z', 'b', '$', '&', '*', '1', '*', 'u', 'w'};
+        int numero = 0;
+        boolean repetir = true;
+        while (repetir) {
+            try {
+                System.out.println("Introduzca el número de carácteres que desea");
+                numero = teclado.nextInt();
+                if (numero > 0){
+                    repetir = false;
+                } else{
+                    System.out.println("El número debe ser mayor que 0");
+                }
+            } catch (InputMismatchException ime){
+                System.out.println("Eso no es un número");
+                teclado.nextLine();
+            }
+        }
+        
+        String password2 = "";
         for (int i = 0; i < 10; i++) {
-            String password2 = RandomStringUtils.random(numero, conjuntoCaracteres);
-            System.out.println(password2);
+            password2 = RandomStringUtils.random(numero, conjuntoCaracteres);
         }
-
+        return password2;
     }
 }
